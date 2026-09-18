@@ -1,0 +1,86 @@
+# -----------------------------------------------------------------
+# Actividad: Expresiones Regulares, AFD y Python
+# Demostración práctica
+#
+# Expresión regular seleccionada: identificadores válidos de Python
+# Patrón: ^[a-zA-Z_][a-zA-Z0-9_]*$
+#
+# Lenguaje que representa:
+# Cadenas que comienzan con una letra (mayúscula o minúscula) o guion
+# bajo, seguidas de cero o más letras, dígitos o guiones bajos. Es el
+# mismo lenguaje que Python exige para nombres de variables, funciones, etc.
+# -----------------------------------------------------------------
+ 
+import re
+ 
+# -----------------------------------------------------------------
+# 1. Ejemplos generales del módulo re
+# -----------------------------------------------------------------
+ 
+print("=" * 60)
+print("EJEMPLOS GENERALES DEL MODULO re")
+print("=" * 60)
+ 
+# re.match(): busca coincidencia SOLO al inicio de la cadena
+texto1 = "Hola123 mundo"
+resultado1 = re.match(r'\w+', texto1)
+print("\nre.match(r'\\w+', '" + texto1 + "') ->", resultado1.group())
+ 
+# re.search(): busca coincidencia en cualquier parte de la cadena
+texto2 = "El correo es ana@mail.com y es valido"
+resultado2 = re.search(r'[\w.]+@[\w.]+', texto2)
+print("re.search(...) sobre '" + texto2 + "' ->", resultado2.group())
+ 
+# re.findall(): devuelve TODAS las coincidencias como lista
+texto3 = "Los codigos son A1, B2, C3 y D4"
+resultado3 = re.findall(r'[A-Z]\d', texto3)
+print("re.findall(r'[A-Z]\\d', '" + texto3 + "') ->", resultado3)
+ 
+# re.sub(): reemplaza las coincidencias por otro texto
+texto4 = "Mi telefono es 3001234567 y mi otro es 3109876543"
+resultado4 = re.sub(r'\d{10}', '[NUMERO OCULTO]', texto4)
+print("re.sub(...) sobre '" + texto4 + "' ->", resultado4)
+ 
+# -----------------------------------------------------------------
+# 2. Demostración específica: validación de identificadores
+# -----------------------------------------------------------------
+ 
+patron = r'^[a-zA-Z_][a-zA-Z0-9_]*$'
+ 
+print("\n" + "=" * 60)
+print("EXPRESION REGULAR SELECCIONADA:", patron)
+print("=" * 60)
+ 
+cadenas_validas = [
+    "variable",
+    "_contador",
+    "nombre2",
+    "TOTAL_GENERAL",
+    "x",
+]
+ 
+cadenas_invalidas = [
+    "2variable",       # empieza con dígito
+    "mi-variable",      # contiene un guion medio (no permitido)
+    "nombre completo",   # contiene un espacio
+    "ano!",              # contiene un símbolo no permitido
+    "",                  # cadena vacía
+]
+ 
+print("\n--- Cadenas que SI cumplen la expresion (deben ser validas) ---")
+for cadena in cadenas_validas:
+    resultado = re.match(patron, cadena)
+    if resultado:
+        estado = "VALIDA"
+    else:
+        estado = "NO VALIDA"
+    print("  '" + cadena + "' ->", estado)
+ 
+print("\n--- Cadenas que NO cumplen la expresion (deben ser invalidas) ---")
+for cadena in cadenas_invalidas:
+    resultado = re.match(patron, cadena)
+    if resultado:
+        estado = "VALIDA"
+    else:
+        estado = "NO VALIDA"
+    print("  '" + cadena + "' ->", estado)
